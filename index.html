@@ -1,0 +1,1641 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Organ Donator and Finder</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #252525;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #b5122a;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 25px;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .header-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            background: #252525;
+            padding: 12px 5%;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* PAGE CONTROL */
+
+        .page {
+            display: none;
+            padding: 40px 20px;
+            min-height: 75vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* HOME */
+
+        .hero {
+            text-align: center;
+            padding: 55px 20px;
+            background: linear-gradient(135deg, #ffe5e9, white);
+            border-radius: 12px;
+        }
+
+        .hero h2 {
+            color: #b5122a;
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .hero > p {
+            max-width: 700px;
+            margin: 0 auto 25px;
+        }
+
+        .choice-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 35px;
+        }
+
+        .choice-card {
+            background: white;
+            width: 290px;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px #00000012;
+        }
+
+        .choice-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .choice-card h3 {
+            color: #b5122a;
+            margin-bottom: 10px;
+        }
+
+        .choice-card p {
+            margin-bottom: 20px;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            background: #b5122a;
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px 3px;
+        }
+
+        .btn:hover {
+            background: #820d1d;
+        }
+
+        .secondary-btn {
+            background: #444;
+        }
+
+        .secondary-btn:hover {
+            background: #222;
+        }
+
+        /* FORM CONTAINER */
+
+        .form-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px #00000012;
+        }
+
+        .form-box h2 {
+            text-align: center;
+            color: #b5122a;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #b5122a;
+            border-color: #b5122a;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        /* NOTICE */
+
+        .notice {
+            background: #fff4d6;
+            border-left: 5px solid #d99a00;
+            padding: 13px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* CHECKBOXES */
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .check-item input {
+            width: auto;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .check-item label {
+            font-weight: normal;
+            margin: 0;
+        }
+
+        /* DETAILS */
+
+        .details-card {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px #00000012;
+        }
+
+        .details-card h2 {
+            color: #b5122a;
+            margin-bottom: 18px;
+        }
+
+        .details-card h3 {
+            color: #b5122a;
+            margin: 22px 0 12px;
+        }
+
+        .detail-row {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-row strong {
+            display: inline-block;
+            min-width: 180px;
+        }
+
+        .sample-label {
+            display: inline-block;
+            background: #fff0c2;
+            color: #704b00;
+            padding: 7px 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+        }
+
+        .success {
+            display: block;
+            background: #e0f7e8;
+            color: #176b36;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #252525;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                justify-content: center;
+                text-align: center;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .form-box,
+            .details-card {
+                padding: 20px;
+            }
+
+            .detail-row strong {
+                min-width: 0;
+                display: block;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>❤️ Organ Donator & Finder</h1>
+
+        <div class="header-links">
+
+            <a href="#" onclick="showPage('login'); return false;">
+                Login Details
+            </a>
+
+            <a href="#" onclick="showPage('about'); return false;">
+                About
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+        <a href="#" onclick="showPage('home'); return false;">
+            Home
+        </a>
+    </nav>
+
+    <main>
+
+        <!-- HOME PAGE -->
+
+        <section id="home" class="page active">
+
+            <div class="hero">
+
+                <h2>Give the Gift of Life</h2>
+
+                <p>
+                    Welcome to the Organ Donator and Finder website.
+                    Explore organ donation information and choose
+                    whether you are registering as a donor or receiver.
+                </p>
+
+                <h3>Choose Your Role</h3>
+
+                <div class="choice-container">
+
+                    <div class="choice-card">
+
+                        <div class="choice-icon">❤️</div>
+
+                        <h3>I'm a Donor</h3>
+
+                        <p>
+                            Provide your information and select
+                            your preferred hospital and organ.
+                        </p>
+
+                        <button
+                            class="btn"
+                            onclick="showPage('donor')">
+                            I'm a Donor
+                        </button>
+
+                    </div>
+
+                    <div class="choice-card">
+
+                        <div class="choice-icon">🏥</div>
+
+                        <h3>I'm a Receiver</h3>
+
+                        <p>
+                            Provide your information, required organ,
+                            prescription and preferred hospital.
+                        </p>
+
+                        <button
+                            class="btn"
+                            onclick="showPage('receiver')">
+                            I'm a Receiver
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ABOUT PAGE -->
+
+        <section id="about" class="page">
+
+            <div class="form-box">
+
+                <h2>About Our Website</h2>
+
+                <p>
+                    Organ Donator and Finder is a website project
+                    designed to demonstrate donor and receiver
+                    registration interfaces.
+                </p>
+
+                <br>
+
+                <p>
+                    It provides registration forms, declarations,
+                    registration details and hospital information.
+                </p>
+
+                <br>
+
+                <div class="notice">
+                    Organ donation and transplantation require
+                    appropriate medical assessment, authorization
+                    and coordination through authorized services.
+                </div>
+
+                <button class="btn" onclick="showPage('home')">
+                    Back to Home
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- LOGIN PAGE -->
+
+        <section id="login" class="page">
+
+            <div class="form-box">
+
+                <h2>Login Details</h2>
+
+                <p class="description">
+                    Account login interface
+                </p>
+
+                <div class="notice">
+                    This login interface is not connected to an
+                    authentication system. Do not enter an actual
+                    password.
+                </div>
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            required>
+
+                    </div>
+
+                    <button type="submit" class="btn">
+                        Login
+                    </button>
+
+                    <div id="loginMessage" class="message"></div>
+
+                </form>
+
+                <button
+                    class="btn secondary-btn"
+                    onclick="showPage('home')">
+                    Back
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- DONOR FORM -->
+
+        <section id="donor" class="page">
+
+            <div class="form-box">
+
+                <h2>Donor Registration Form</h2>
+
+                <p class="description">
+                    Enter the required information.
+                </p>
+
+                <div class="notice">
+                    Use fictional details while testing this website.
+                    Aadhaar numbers and medical records are sensitive
+                    information and must not be collected without an
+                    appropriate legal basis and secure handling.
+                </div>
+
+                <form id="donorForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="dName">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="dName"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dAge">
+                                Age *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="dAge"
+                                min="18"
+                                max="120"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dMobile">
+                                Mobile Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="dMobile"
+                                inputmode="numeric"
+                                pattern="[0-9]{10}"
+                                maxlength="10"
+                                placeholder="10-digit mobile number"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dEmail">
+                                Email Address *
+                            </label>
+
+                            <input
+                                type="email"
+                                id="dEmail"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dAadhaar">
+                                Aadhaar Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="dAadhaar"
+                                inputmode="numeric"
+                                pattern="[0-9]{12}"
+                                maxlength="12"
+                                placeholder="Optional"
+                                autocomplete="off">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dBlood">
+                                Blood Group *
+                            </label>
+
+                            <select id="dBlood" required>
+
+                                <option value="">
+                                    Select blood group
+                                </option>
+
+                                <option>A+</option>
+                                <option>A-</option>
+                                <option>B+</option>
+                                <option>B-</option>
+                                <option>AB+</option>
+                                <option>AB-</option>
+                                <option>O+</option>
+                                <option>O-</option>
+                                <option>Unknown</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dCity">
+                                City *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="dCity"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="dGender">
+                                Gender
+                            </label>
+
+                            <select id="dGender">
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                                <option>Prefer not to say</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="dHospital">
+                                Preferred Hospital *
+                            </label>
+
+                            <select id="dHospital" required>
+
+                                <option value="">
+                                    Select hospital
+                                </option>
+
+                                <option value="city">
+                                    City General Hospital
+                                </option>
+
+                                <option value="care">
+                                    Care Medical Centre
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="dOrgan">
+                                Organ of Interest *
+                            </label>
+
+                            <select id="dOrgan" required>
+
+                                <option value="">
+                                    Select organ
+                                </option>
+
+                                <option>Kidney</option>
+                                <option>Liver</option>
+                                <option>Heart</option>
+                                <option>Lungs</option>
+                                <option>Cornea</option>
+                                <option>Other / Need Information</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="dInfo">
+                                Additional Information
+                            </label>
+
+                            <textarea
+                                id="dInfo"
+                                rows="3"
+                                placeholder="Optional information">
+                            </textarea>
+
+                        </div>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="dConsent"
+                            required>
+
+                        <label for="dConsent">
+                            I confirm that the information provided
+                            is accurate to the best of my knowledge.
+                            I understand that medical eligibility and
+                            consent must be handled through the
+                            appropriate authorized services.
+                        </label>
+
+                    </div>
+
+                    <button type="submit" class="btn">
+                        Submit Donor Form
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn secondary-btn"
+                        onclick="showPage('home')">
+                        Cancel
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- RECEIVER FORM -->
+
+        <section id="receiver" class="page">
+
+            <div class="form-box">
+
+                <h2>Receiver Registration Form</h2>
+
+                <p class="description">
+                    Enter the required information.
+                </p>
+
+                <div class="notice">
+                    Use fictional details and a sample document
+                    while testing. This website does not allocate
+                    organs or send prescriptions to hospitals.
+                </div>
+
+                <form id="receiverForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label for="rName">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rName"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rAge">
+                                Age *
+                            </label>
+
+                            <input
+                                type="number"
+                                id="rAge"
+                                min="1"
+                                max="120"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rMobile">
+                                Mobile Number *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="rMobile"
+                                inputmode="numeric"
+                                pattern="[0-9]{10}"
+                                maxlength="10"
+                                placeholder="10-digit mobile number"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rEmail">
+                                Email Address *
+                            </label>
+
+                            <input
+                                type="email"
+                                id="rEmail"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rAadhaar">
+                                Aadhaar Number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rAadhaar"
+                                inputmode="numeric"
+                                pattern="[0-9]{12}"
+                                maxlength="12"
+                                placeholder="Optional"
+                                autocomplete="off">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rBlood">
+                                Blood Group *
+                            </label>
+
+                            <select id="rBlood" required>
+
+                                <option value="">
+                                    Select blood group
+                                </option>
+
+                                <option>A+</option>
+                                <option>A-</option>
+                                <option>B+</option>
+                                <option>B-</option>
+                                <option>AB+</option>
+                                <option>AB-</option>
+                                <option>O+</option>
+                                <option>O-</option>
+                                <option>Unknown</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rCity">
+                                City *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rCity"
+                                required>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="rGender">
+                                Gender
+                            </label>
+
+                            <select id="rGender">
+
+                                <option value="">
+                                    Select gender
+                                </option>
+
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                                <option>Prefer not to say</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="rOrgan">
+                                Required Organ *
+                            </label>
+
+                            <select id="rOrgan" required>
+
+                                <option value="">
+                                    Select required organ
+                                </option>
+
+                                <option>Kidney</option>
+                                <option>Liver</option>
+                                <option>Heart</option>
+                                <option>Lungs</option>
+                                <option>Cornea</option>
+                                <option>Other</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="rPrescription">
+                                Doctor's Prescription *
+                            </label>
+
+                            <input
+                                type="file"
+                                id="rPrescription"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                required>
+
+                            <small>
+                                The selected file will only be used
+                                to demonstrate the upload field.
+                                It will not be uploaded to a server.
+                            </small>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="rHospital">
+                                Preferred Hospital *
+                            </label>
+
+                            <select id="rHospital" required>
+
+                                <option value="">
+                                    Select hospital
+                                </option>
+
+                                <option value="city">
+                                    City General Hospital
+                                </option>
+
+                                <option value="care">
+                                    Care Medical Centre
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group full-width">
+
+                            <label for="rInfo">
+                                Additional Information *
+                            </label>
+
+                            <textarea
+                                id="rInfo"
+                                rows="3"
+                                required
+                                placeholder="Enter information">
+                            </textarea>
+
+                        </div>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            id="rConsent"
+                            required>
+
+                        <label for="rConsent">
+                            I confirm that the information provided
+                            is accurate and understand that actual
+                            organ allocation and treatment require
+                            authorized medical assessment.
+                        </label>
+
+                    </div>
+
+                    <button type="submit" class="btn">
+                        Submit Receiver Form
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn secondary-btn"
+                        onclick="showPage('home')">
+                        Cancel
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- DECLARATION -->
+
+        <section id="declaration" class="page">
+
+            <div class="form-box">
+
+                <h2>Declaration Form</h2>
+
+                <p class="description">
+                    Read and accept every declaration.
+                </p>
+
+                <div class="notice">
+                    This declaration records acknowledgement
+                    for this website. It is not a substitute for
+                    legally required organ donation consent.
+                </div>
+
+                <form id="declarationForm">
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="declaration-check"
+                            required>
+
+                        <label>
+                            I confirm that the information I provided
+                            is accurate to the best of my knowledge.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="declaration-check"
+                            required>
+
+                        <label>
+                            I understand that doctors must assess
+                            medical eligibility and suitability.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="declaration-check"
+                            required>
+
+                        <label>
+                            I understand that registration does not
+                            guarantee organ availability or a transplant.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="declaration-check"
+                            required>
+
+                        <label>
+                            I understand that the hospital information
+                            and appointment details shown here are
+                            illustrative and are not a real booking.
+                        </label>
+
+                    </div>
+
+                    <div class="check-item">
+
+                        <input
+                            type="checkbox"
+                            class="declaration-check"
+                            required>
+
+                        <label>
+                            I understand that this website does not
+                            send information to a hospital or
+                            securely store personal information.
+                        </label>
+
+                    </div>
+
+                    <button type="submit" class="btn">
+                        Accept and Continue
+                    </button>
+
+                    <button
+                        type="button"
+                        class="btn secondary-btn"
+                        onclick="goBackToForm()">
+                        Back
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- REGISTRATION DETAILS AND HOSPITAL -->
+
+        <section id="hospital" class="page">
+
+            <div class="details-card">
+
+                <span class="sample-label">
+                    Hospital details and appointment are illustrative
+                </span>
+
+                <h2>Registration Details</h2>
+
+                <div class="detail-row">
+                    <strong>Registration Type:</strong>
+                    <span id="summaryRole"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Full Name:</strong>
+                    <span id="summaryName"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Age:</strong>
+                    <span id="summaryAge"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Mobile Number:</strong>
+                    <span id="summaryMobile"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Email:</strong>
+                    <span id="summaryEmail"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Aadhaar Number:</strong>
+                    <span id="summaryAadhaar"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Blood Group:</strong>
+                    <span id="summaryBlood"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>City:</strong>
+                    <span id="summaryCity"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Gender:</strong>
+                    <span id="summaryGender"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Organ Name:</strong>
+                    <span id="summaryOrgan"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Additional Information:</strong>
+                    <span id="summaryInfo"></span>
+                </div>
+
+                <div class="detail-row" id="prescriptionRow">
+                    <strong>Prescription File:</strong>
+                    <span id="summaryPrescription"></span>
+                </div>
+
+                <h3>Hospital Information</h3>
+
+                <div class="detail-row">
+                    <strong>Hospital Name:</strong>
+                    <span id="hospitalName"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Hospital Address:</strong>
+                    <span id="hospitalAddress"></span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Contact Number:</strong>
+                    <span id="hospitalContact"></span>
+                </div>
+
+                <h3>Appointment Information</h3>
+
+                <div class="notice">
+                    The following date and time are sample values.
+                    They do not represent an appointment or operation
+                    confirmed by a hospital.
+                </div>
+
+                <div class="detail-row">
+                    <strong>Sample Date:</strong>
+                    <span>15 November 2026</span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Sample Time:</strong>
+                    <span>10:30 AM</span>
+                </div>
+
+                <div class="detail-row">
+                    <strong>Status:</strong>
+                    <span>Not Booked</span>
+                </div>
+
+                <br>
+
+                <button class="btn" onclick="window.print()">
+                    Print Details
+                </button>
+
+                <button
+                    class="btn secondary-btn"
+                    onclick="showPage('home')">
+                    Back to Home
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>Organ Donator and Finder</p>
+
+        <p>Supporting Organ Donation Awareness</p>
+
+        <p>© 2026</p>
+
+    </footer>
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+    let currentRole = "";
+    let selectedName = "";
+    let selectedHospital = "";
+    let registrationData = {};
+
+    // =====================================
+    // EMAILJS CONFIGURATION
+    // =====================================
+
+    // Replace these three values with your EmailJS details.
+    const EMAILJS_PUBLIC_KEY = "Tl7NQyAxsGDxenq7R";
+    const EMAILJS_SERVICE_ID = "service_ywqi7km";
+    const EMAILJS_TEMPLATE_ID = "template_n4k4e8w";
+
+    // Initialize EmailJS.
+    emailjs.init({
+        publicKey: EMAILJS_PUBLIC_KEY
+    });
+
+    const hospitals = {
+        city: {
+            name: "City General Hospital",
+            address: "123 Main Road, Sample City",
+            contact: "6303017791"
+        },
+
+        care: {
+            name: "Care Medical Centre",
+            address: "456 Central Avenue, Sample City",
+            contact: "8096424912"
+        }
+    };
+
+    // Show pages.
+    function showPage(pageId) {
+        document.querySelectorAll(".page").forEach(function(page) {
+            page.classList.remove("active");
+        });
+
+        const page = document.getElementById(pageId);
+
+        if (page) {
+            page.classList.add("active");
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    // Safely display text.
+    function setText(id, value) {
+        document.getElementById(id).textContent =
+            value || "Not provided";
+    }
+
+    // Read form information.
+    function readForm(fields) {
+        const data = {};
+
+        for (const key in fields) {
+            const element = document.getElementById(fields[key]);
+
+            if (element.type === "file") {
+                data[key] = element.files.length
+                    ? element.files[0].name
+                    : "No file selected";
+            } else {
+                data[key] = element.value.trim();
+            }
+        }
+
+        return data;
+    }
+
+    // =====================================
+    // SEND APPLICATION EMAIL
+    // =====================================
+
+    async function sendApplicationEmail(data, role, hospital) {
+        const templateParams = {
+            user_name: data.name,
+            user_email: data.email,
+            user_age: data.age,
+            user_mobile: data.mobile,
+            user_city: data.city,
+            user_blood: data.blood,
+            organ_name: data.organ,
+            registration_type: role,
+            hospital_name: hospital.name
+        };
+
+        try {
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams
+            );
+
+            return true;
+        } catch (error) {
+            console.error("EmailJS error:", error);
+            return false;
+        }
+    }
+
+    // =====================================
+    // DONOR FORM
+    // =====================================
+
+    document.getElementById("donorForm").addEventListener(
+        "submit",
+        function(event) {
+            event.preventDefault();
+
+            currentRole = "Donor";
+
+            registrationData = readForm({
+                name: "dName",
+                age: "dAge",
+                mobile: "dMobile",
+                email: "dEmail",
+                aadhaar: "dAadhaar",
+                blood: "dBlood",
+                city: "dCity",
+                gender: "dGender",
+                organ: "dOrgan",
+                info: "dInfo"
+            });
+
+            selectedName = registrationData.name;
+
+            selectedHospital =
+                document.getElementById("dHospital").value;
+
+            registrationData.prescription = "";
+
+            showPage("declaration");
+        }
+    );
+
+    // =====================================
+    // RECEIVER FORM
+    // =====================================
+
+    document.getElementById("receiverForm").addEventListener(
+        "submit",
+        function(event) {
+            event.preventDefault();
+
+            currentRole = "Receiver";
+
+            registrationData = readForm({
+                name: "rName",
+                age: "rAge",
+                mobile: "rMobile",
+                email: "rEmail",
+                aadhaar: "rAadhaar",
+                blood: "rBlood",
+                city: "rCity",
+                gender: "rGender",
+                organ: "rOrgan",
+                info: "rInfo",
+                prescription: "rPrescription"
+            });
+
+            selectedName = registrationData.name;
+
+            selectedHospital =
+                document.getElementById("rHospital").value;
+
+            showPage("declaration");
+        }
+    );
+
+    // =====================================
+    // DECLARATION FORM
+    // =====================================
+
+    document.getElementById("declarationForm").addEventListener(
+        "submit",
+        async function(event) {
+            event.preventDefault();
+
+            const hospital = hospitals[selectedHospital];
+
+            if (!hospital) {
+                alert("Please select a hospital.");
+                return;
+            }
+
+            const submitButton =
+                this.querySelector('button[type="submit"]');
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending Email...";
+
+            displayRegistrationDetails(hospital);
+            showPage("hospital");
+
+            try {
+                const emailSent = await sendApplicationEmail(
+                    registrationData,
+                    currentRole,
+                    hospital
+                );
+
+                if (emailSent) {
+                    alert(
+                        "Application details email sent successfully to " +
+                        registrationData.email +
+                        ". Please check your inbox or spam folder."
+                    );
+                } else {
+                    alert(
+                        "Registration details are displayed, but the email could not be sent. " +
+                        "Please check your EmailJS IDs, template settings, and internet connection."
+                    );
+                }
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Accept and Continue";
+            }
+        }
+    );
+
+    // =====================================
+    // DISPLAY REGISTRATION DETAILS
+    // =====================================
+
+    function displayRegistrationDetails(hospital) {
+        setText("summaryRole", currentRole);
+        setText("summaryName", registrationData.name);
+        setText("summaryAge", registrationData.age);
+        setText("summaryMobile", registrationData.mobile);
+        setText("summaryEmail", registrationData.email);
+
+        // Mask Aadhaar number.
+        const aadhaar = registrationData.aadhaar || "";
+
+        const maskedAadhaar = aadhaar.length === 12
+            ? "XXXXXXXX" + aadhaar.slice(-4)
+            : "Not provided";
+
+        setText("summaryAadhaar", maskedAadhaar);
+        setText("summaryBlood", registrationData.blood);
+        setText("summaryCity", registrationData.city);
+        setText("summaryGender", registrationData.gender);
+        setText("summaryOrgan", registrationData.organ);
+        setText("summaryInfo", registrationData.info);
+
+        if (currentRole === "Receiver") {
+            setText(
+                "summaryPrescription",
+                registrationData.prescription
+            );
+
+            document.getElementById("prescriptionRow").style.display =
+                "block";
+        } else {
+            document.getElementById("prescriptionRow").style.display =
+                "none";
+        }
+
+        setText("hospitalName", hospital.name);
+        setText("hospitalAddress", hospital.address);
+        setText("hospitalContact", hospital.contact);
+    }
+
+    // =====================================
+    // BACK TO FORM
+    // =====================================
+
+    function goBackToForm() {
+        if (currentRole === "Donor") {
+            showPage("donor");
+        } else {
+            showPage("receiver");
+        }
+    }
+
+    // =====================================
+    // LOGIN INTERFACE
+    // =====================================
+
+    document.getElementById("loginForm").addEventListener(
+        "submit",
+        function(event) {
+            event.preventDefault();
+
+            const message =
+                document.getElementById("loginMessage");
+
+            message.textContent =
+                "The login interface is not connected to an account system.";
+
+            message.className = "message success";
+        }
+    );
+</script>
+
+</body>
+
+</html>
+```
